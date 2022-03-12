@@ -1,24 +1,28 @@
 import telebot
 from telebot import types
+from bs4 import BeautifulSoup
+import requests as req
 
 bot = telebot.TeleBot("5130068690:AAFOtDL61iI6UnUuNYLpF65FBJ7RHfbM5fM")
+
+def parse():
+    resp = req.get("http://bashorg.org/random")
+    soup = BeautifulSoup(resp.text, 'lxml')
+    soup = soup.find("div", id="quotes").div.find_all("div")[1].text
+    return soup
 
 @bot.message_handler(commands=["start"])
 def start(m, res=False):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    item1 = types.KeyboardButton("Number")
-    item2 = types.KeyboardButton("Text")
+    item1 = types.KeyboardButton("Quote")
     markup.add(item1)
-    markup.add(item2)
-    bot.send_message(m.chat.id, "Click: \nNumber \nText", reply_markup=markup)
+    bot.send_message(m.chat.id, "Click: \nQuote to show random quote", reply_markup=markup)
 
 
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
-    if message.text.strip() == "Number":
-        answer = 123
-    elif message.text.strip() == "Text":
-        answer = "qwer"
+    if message.text.strip() == "Quote":
+        answer = parse()
     bot.send_message(message.chat.id, answer)
 
 
