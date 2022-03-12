@@ -8,7 +8,9 @@ bot = telebot.TeleBot("5130068690:AAFOtDL61iI6UnUuNYLpF65FBJ7RHfbM5fM")
 def parse():
     resp = req.get("http://bashorg.org/random")
     soup = BeautifulSoup(resp.text, 'lxml')
-    soup = soup.find("div", id="quotes").div.find_all("div")[1].text
+    soup = soup.find("div", class_="quote").text
+
+
     return soup
 
 @bot.message_handler(commands=["start"])
