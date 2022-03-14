@@ -33,6 +33,13 @@ def handle_text(message):
         answer = parseQuote()
     elif message.text.strip() == "Joke":
         answer = parseJoke()
+    elif message.text.strip() == "Log":
+        if(message.from_user.username == "moroz_zov"):
+            answer = "Log file"
+            doc = open('log.txt', 'rb')
+            bot.send_document(message.chat.id, doc)
+        else:
+            answer = "Access is denied"
     else:
         answer = "ERROR"
     f = open('log.txt', 'a')
