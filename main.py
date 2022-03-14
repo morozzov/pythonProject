@@ -36,12 +36,15 @@ def handle_text(message):
     else:
         answer = "ERROR"
     f = open('log.txt', 'a')
-    log = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), ' -- ', message.from_user.username, ': \"', message.text.strip(), '\"\n'
+    msg = str(message.text.strip())
+    userName = str(message.from_user.username)
+    if (userName == "None"):
+        userName = "user(" + str(message.chat.id) + ")"
+    log = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), ' -- ', userName, ': \"', msg, '\"\n'
     # print(datetime.datetime.now(), end=": ")
     # print(message.text.strip())
     print(log)
     f.writelines(log)
-
     bot.send_message(message.chat.id, answer)
 
 print("start")
