@@ -4,15 +4,16 @@ from telebot import types
 from bs4 import BeautifulSoup
 import requests as req
 
-bot = telebot.TeleBot("5130068690:AAFOtDL61iI6UnUuNYLpF65FBJ7RHfbM5fM")
+access_key = "AsccesKey"
+bot = telebot.TeleBot(access_key)
 
-def parseQuote():
+def parse_quote():
     resp = req.get("http://bashorg.org/random")
     soup = BeautifulSoup(resp.text, 'lxml')
     soup = soup.find("div", class_="quote").getText(separator="\n")
     return soup
 
-def parseJoke():
+def parse_joke():
     resp = req.get("https://baneks.ru/random")
     soup = BeautifulSoup(resp.text, 'lxml')
     soup = soup.find("p").getText(separator="\n")
@@ -30,9 +31,9 @@ def start(m, res=False):
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
     if message.text.strip() == "Quote":
-        answer = parseQuote()
+        answer = parse_quote()
     elif message.text.strip() == "Joke":
-        answer = parseJoke()
+        answer = parse_joke()
     elif message.text.strip() == "Log":
         if(message.from_user.username == "moroz_zov"):
             answer = "Log file"
@@ -44,10 +45,10 @@ def handle_text(message):
         answer = "ERROR"
     f = open('log.txt', 'a')
     msg = str(message.text.strip())
-    userName = str(message.from_user.username)
-    if (userName == "None"):
-        userName = "user(" + str(message.chat.id) + ")"
-    log = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), ' -- ', userName, ': \"', msg, '\"\n'
+    user_name = str(message.from_user.username)
+    if (user_name == "None"):
+        user_name = "user(" + str(message.chat.id) + ")"
+    log = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), ' -- ', user_name, ': \"', msg, '\"\n'
     # print(datetime.datetime.now(), end=": ")
     # print(message.text.strip())
     print(log)
