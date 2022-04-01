@@ -12,7 +12,7 @@ bot = telebot.TeleBot(access_key)
 
 
 def parse_local_quote():
-    connection = psycopg2.connect(database="DataBase", user="userName", password="Password", host="Host", port="Port")
+    connection = psycopg2.connect(database="DataBase", user="UserName", password="Password", host="Host", port="Port")
 
     cursor = connection.cursor()
 
